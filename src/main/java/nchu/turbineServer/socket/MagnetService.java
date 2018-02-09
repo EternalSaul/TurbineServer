@@ -19,18 +19,18 @@ public class MagnetService implements Callable<byte[]>{
 
 	@Override
 	public byte[] call() throws Exception {
-		//²é¿´httpÇëÇóÍ·²¿
+		//æŸ¥çœ‹httpè¯·æ±‚å¤´éƒ¨
 		InputStream is=socket.getInputStream();
 		InputStreamReader reader=new InputStreamReader(is,"utf-8");
-		BufferedReader br=new BufferedReader(new InputStreamReader(is));//Ê¹ÓÃ¸Ã·½·¨£¬½øĞĞ»º³å  new InputSteramReader()½«×Ö½ÚÁ÷×ª»¯Îª×Ö·ûÁ÷
+		BufferedReader br=new BufferedReader(new InputStreamReader(is));//ä½¿ç”¨è¯¥æ–¹æ³•ï¼Œè¿›è¡Œç¼“å†²  new InputSteramReader()å°†å­—èŠ‚æµè½¬åŒ–ä¸ºå­—ç¬¦æµ
 		String name=br.readLine();
 		
-		//»ñÈ¡Torrent SHAÂë
+		//è·å–Torrent SHAç 
 		String hash=name.split(" ")[1].replaceAll("/", "");
 		File dir=TorrentScanService.getDiretory();
 		File torrent=new File(dir+"/"+hash+".torrent");
 		
-		//ÉèÖÃÇëÇóÍ·²¿
+		//è®¾ç½®è¯·æ±‚å¤´éƒ¨
         String header="HTTP/1.0 200 OK\r\n"  
                 +"Server:MagnetFile 2.0\r\n"  
                 +"Content-length:"+torrent.length()+"\r\n"  
@@ -38,7 +38,7 @@ public class MagnetService implements Callable<byte[]>{
         
 		if(torrent.exists()){
 			OutputStream os=socket.getOutputStream();
-			FileInputStream fs=new FileInputStream(torrent);//¶ÁÈ¡ÎÄ¼şÖĞµÄÊı¾İ
+			FileInputStream fs=new FileInputStream(torrent);//è¯»å–æ–‡ä»¶ä¸­çš„æ•°æ®
 			System.out.println(fs.available());
 			byte b[]=new byte[4096];
 			os.write(header.getBytes(Charset.forName("utf-8")));
@@ -50,7 +50,7 @@ public class MagnetService implements Callable<byte[]>{
 				os.flush();
 			}
 //			os.flush();
-			System.out.println(k+"ÒÔĞ´");
+			System.out.println(k+"ä»¥å†™");
 			socket.close();
 			return b;
 		}else{
